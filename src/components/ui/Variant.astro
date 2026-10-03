@@ -1,0 +1,19 @@
+---
+/** One option inside <Variants>. `name` labels its button; `note` explains it under the bar. */
+interface Props {
+  name: string;
+  note?: string;
+}
+
+const { name, note } = Astro.props;
+---
+
+<div class="variant prose" data-variant data-name={name} data-note={note}>
+  <slot />
+</div>
+
+<style>
+  .variant > :global(:first-child) {
+    margin-top: 0;
+  }
+</style>

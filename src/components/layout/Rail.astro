@@ -1,0 +1,95 @@
+---
+/**
+ * Right-hand column: "On this page", built from the page's h2 and h3 headings.
+ * The link for the section in view is highlighted. BaseLayout leaves the rail out
+ * when a page has no headings.
+ */
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  toc: MarkdownHeading[];
+}
+
+const { toc } = Astro.props;
+---
+
+<aside class="rail bev">
+  <nav aria-label="On this page">
+    <h2>On this page</h2>
+    <ul data-toc>
+      <li>
+        <a href="#top">Top</a>
+      </li>
+      {toc.map((h) => (
+        <li class:list={{ sub: h.depth === 3 }}>
+          <a href={`#${h.slug}`}>{h.text}</a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</aside>
+
+<script>
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-toc] a')];
+  const targets = links
+    .map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1))))
+    .filter((el): el is HTMLElement => el !== null);
+
+  if (targets.length && 'IntersectionObserver' in window) {
+    const visible = new Set<Element>();
+    const mark = () => {
+      const first = targets.find((t) => visible.has(t));
+      if (!first) return;
+      for (const a of links) a.classList.toggle('on', a.hash === `#${first.id}`);
+    };
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) e.isIntersecting ? visible.add(e.target) : visible.delete(e.target);
+        mark();
+      },
+      { rootMargin: '0px 0px -60% 0px' },
+    );
+    targets.forEach((t) => io.observe(t));
+  }
+</script>
+
+<style>
+  .rail {
+    padding: 14px;
+    font-size: 14px;
+    position: sticky;
+    top: 16px;
+    max-height: calc(100vh - 32px);
+    overflow: auto;
+    scrollbar-width: thin;
+  }
+
+  h2 {
+    margin: 0 0 8px;
+    font: var(--px-md) / 1 var(--font-pixel);
+    color: var(--title);
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 5px;
+  }
+
+  .sub {
+    padding-left: 12px;
+  }
+
+  a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  a:hover,
+  a:global(.on) {
+    color: var(--link);
+    text-decoration: underline;
+  }
+</style>

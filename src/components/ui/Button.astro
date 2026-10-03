@@ -1,0 +1,38 @@
+---
+/**
+ * Stone button. Renders a link when `href` is set, otherwise a disabled placeholder
+ * (for things that aren't written yet).
+ */
+interface Props {
+  href?: string | null;
+  current?: boolean;
+  disabledReason?: string;
+}
+
+const { href, current = false, disabledReason = 'Coming soon' } = Astro.props;
+---
+
+{href ? (
+  <a class="btn btn-surface" href={href} aria-current={current ? 'page' : undefined}>
+    <slot />
+  </a>
+) : (
+  <span class="btn btn-surface" aria-disabled="true" title={disabledReason}>
+    <slot />
+  </span>
+)}
+
+<style>
+  .btn {
+    display: inline-block;
+    padding: 9px 14px;
+    font: var(--px-md) / 1 var(--font-pixel);
+    /* Beat .prose a, which would otherwise turn button text into a blue link */
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .btn[aria-disabled='true'] {
+    color: #c4c4c4;
+  }
+</style>

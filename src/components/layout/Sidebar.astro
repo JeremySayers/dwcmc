@@ -1,0 +1,254 @@
+---
+/**
+ * Page tree. Each section collapses on its own; open/closed state is remembered in
+ * localStorage so it survives page loads. The section holding the current page is always open.
+ * On phones the whole tree folds into one "Browse all pages" disclosure.
+ */
+import type { NavGroup } from '@/lib/nav';
+
+interface Props {
+  nav: NavGroup[];
+  currentId: string;
+}
+
+const { nav, currentId } = Astro.props;
+---
+
+<details class="side bev" data-side open>
+  <summary>Browse all pages</summary>
+  <div class="tools">
+    <button type="button" data-expand>
+      Expand all
+    </button>
+    <button type="button" data-collapse>
+      Collapse all
+    </button>
+  </div>
+  {nav.map((g) => {
+    const hasCurrent = g.pages.some((p) => p.id === currentId);
+    return (
+      <details
+        class="grp"
+        data-group={g.section.id}
+        data-default={g.section.defaultOpen ? 'open' : 'closed'}
+        data-has-current={hasCurrent ? '' : undefined}
+        open={g.section.defaultOpen || hasCurrent}
+      >
+        <summary>
+          <span class="tri" aria-hidden="true" />
+          {g.section.name}
+          <span class="ct slot" title={`${g.pages.length} pages`}>
+            {g.pages.length}
+          </span>
+        </summary>
+        <ul>
+          {g.pages.map((p) => (
+            <li>
+              {p.href ? (
+                <a href={p.href} aria-current={p.id === currentId ? 'page' : undefined}>
+                  {p.title}
+                </a>
+              ) : (
+                <span class="planned" title="Not written yet">
+                  {p.title}
+                </span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </details>
+    );
+  })}
+</details>
+
+<script is:inline>
+  // Runs straight after the markup so saved state applies before first paint.
+  (() => {
+    const KEY = 'dwcmc:nav:';
+    const side = document.querySelector('[data-side]');
+    if (!side) return;
+    const groups = [...side.querySelectorAll('[data-group]')];
+    const read = (k) => {
+      try {
+        return localStorage.getItem(KEY + k);
+      } catch {
+        return null;
+      }
+    };
+    const write = (k, v) => {
+      try {
+        localStorage.setItem(KEY + k, v);
+      } catch {}
+    };
+
+    for (const g of groups) {
+      const saved = read(g.dataset.group);
+      if (saved) g.open = saved === 'open' || g.hasAttribute('data-has-current');
+      g.addEventListener('toggle', () => write(g.dataset.group, g.open ? 'open' : 'closed'));
+    }
+    side
+      .querySelector('[data-expand]')
+      .addEventListener('click', () => groups.forEach((g) => (g.open = true)));
+    side
+      .querySelector('[data-collapse]')
+      .addEventListener('click', () => groups.forEach((g) => (g.open = false)));
+
+    const wide = matchMedia('(min-width: 781px)');
+    const sync = () => (side.open = wide.matches);
+    sync();
+    wide.addEventListener('change', sync);
+  })();
+</script>
+
+<style>
+  .side {
+    padding: 12px 10px 14px;
+    position: sticky;
+    top: 16px;
+    max-height: calc(100vh - 32px);
+    overflow: auto;
+    scrollbar-width: thin;
+  }
+
+  .side > summary {
+    display: none;
+  }
+
+  .tools {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 0 4px 8px;
+    margin-bottom: 6px;
+    border-bottom: 2px solid #a8a8a8;
+  }
+
+  .tools button {
+    all: unset;
+    cursor: pointer;
+    font: var(--px-sm) / 1.4 var(--font-pixel);
+    color: var(--ink-2);
+  }
+
+  .tools button:hover {
+    color: var(--link);
+    text-decoration: underline;
+  }
+
+  .tools button:focus-visible {
+    outline: 2px solid var(--link);
+    outline-offset: 2px;
+  }
+
+  .grp {
+    margin-top: 4px;
+  }
+
+  .grp > summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px;
+    cursor: pointer;
+    font: var(--px-lg) / 1.1 var(--font-pixel);
+    color: var(--title);
+    user-select: none;
+  }
+
+  .grp > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .grp > summary:hover {
+    background: var(--panel-hover);
+  }
+
+  .tri {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 5px 0 5px 7px;
+    border-color: transparent transparent transparent var(--title);
+    transition: transform 0.15s;
+  }
+
+  .grp[open] > summary .tri {
+    transform: rotate(90deg);
+  }
+
+  .ct {
+    margin-left: auto;
+    min-width: 26px;
+    height: 22px;
+    display: grid;
+    place-items: center;
+    font: var(--px-sm) / 1 var(--font-pixel);
+    color: #fff;
+    text-shadow: 1px 1px 0 var(--title);
+  }
+
+  ul {
+    list-style: none;
+    margin: 2px 0 8px;
+    padding: 0 0 0 14px;
+    display: grid;
+    gap: 2px;
+  }
+
+  a,
+  .planned {
+    display: block;
+    padding: 3px 8px;
+    font-size: var(--text-small);
+    line-height: 1.45;
+    border: 2px solid transparent;
+  }
+
+  a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  a:hover {
+    background: var(--panel-hover);
+  }
+
+  a[aria-current='page'] {
+    background: var(--slot);
+    border-color: var(--slot-dark) var(--bevel-hi) var(--bevel-hi) var(--slot-dark);
+    color: #fff;
+    text-shadow: 1px 1px 0 var(--title);
+    font-weight: 600;
+  }
+
+  .planned {
+    color: #6a6a6a;
+    cursor: default;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tri {
+      transition: none;
+    }
+  }
+
+  @media (max-width: 780px) {
+    .side {
+      position: static;
+      max-height: none;
+    }
+
+    .side > summary {
+      display: block;
+      cursor: pointer;
+      font: var(--px-lg) / 1.2 var(--font-pixel);
+      color: var(--title);
+      padding: 4px 6px;
+    }
+
+    .side[open] > summary {
+      margin-bottom: 8px;
+    }
+  }
+</style>

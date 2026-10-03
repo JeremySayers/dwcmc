@@ -1,0 +1,103 @@
+/*
+ * Design tokens for the Stone theme: bevelled stone panels on a dirt background.
+ * Every colour, font and bevel in the site comes from here. Change the theme here, not in components.
+ *
+ * The theme is deliberately a single look (no dark mode). Panels are light and the page is dark,
+ * so it reads the same whatever the visitor's system setting is.
+ */
+:root {
+  color-scheme: light;
+
+  /* Page background */
+  --dirt: #1d1610;
+  --dirt-2: #241b13;
+
+  /* Panels */
+  --panel: #c6c6c6;
+  --paper: #e4e4e4;
+  --panel-hover: #d4d4d4;
+
+  /* Text */
+  --ink: #242424;
+  --ink-2: #4a4a4a;
+  --title: #3f3f3f;
+  --on-dirt: #c9b99a;
+
+  /* Bevels: light top-left, dark bottom-right, black outer edge */
+  --bevel-hi: #ffffff;
+  --bevel-lo: #555555;
+  --edge: #000000;
+
+  /* Inset slots (like inventory slots) */
+  --slot: #8b8b8b;
+  --slot-dark: #373737;
+
+  /* Buttons */
+  --btn: #727272;
+  --btn-hi: #acacac;
+  --btn-lo: #3a3a3a;
+  --btn-pressed: #5a5a5a;
+  --btn-hover: #7b86c4;
+  --btn-hover-hi: #bcc4ee;
+  --btn-hover-lo: #3b416a;
+  --btn-text-shadow: 2px 2px 0 var(--title);
+
+  /* Meaning */
+  --link: #1d4ea6;
+  --good: #2e6b1e;
+  --bad: #9b1c1c;
+  --xp: #80ff20;
+  --xp-shadow: #1b3f00;
+  --gold: #ffff55;
+  --selected: #6b7fb8;
+  --selected-hi: #c8d0f4;
+  --selected-lo: #3b416a;
+
+  /* Version chips (<AppliesTo>): lit and raised where a rule holds, sunk and dim where it doesn't */
+  --applies-on: #3f8f2a;
+  --applies-on-hi: #7fd05a;
+  --applies-on-lo: #1f4f12;
+  --applies-off: #555555;
+  --applies-off-hi: #6a6a6a;
+  --applies-off-lo: #404040;
+  --applies-off-text: #959595;
+
+  /* <Unconfirmed>: a dashed amber note for claims not yet checked in 1.1 */
+  --unconfirmed-bg: #efe2b4;
+  --unconfirmed-border: #8a6a00;
+  --unconfirmed-text: #5c4600;
+
+  /* Item tooltip (used for callouts) */
+  --tip: #100010f2;
+  --tip-border: #2d0a6e;
+  --tip-glow: #5000ff80;
+  --tip-muted: #aaaaaa;
+
+  /* Type */
+  /* Pixel font for headings, labels and buttons. Jersey 15 has one weight. */
+  --font-pixel: 'Jersey 15', ui-monospace, monospace;
+  /* Tiny5 is only used for the DWCMC logo */
+  --font-logo: 'Tiny5', ui-monospace, monospace;
+  --font-body: 'Work Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --text-base: 17px;
+  --text-small: 15px;
+  --text-tiny: 13px;
+  --measure: 66ch;
+
+  /* Pixel-font sizes, tuned for Jersey 15 (it runs small, so labels need more px than body text) */
+  --px-h1: clamp(38px, 5vw, 52px);
+  --px-h2: clamp(30px, 3.6vw, 36px);
+  --px-h3: 27px;
+  --px-xl: 24px; /* tile titles, version strip names */
+  --px-lg: 20px; /* callout titles, sidebar section names */
+  --px-md: 18px; /* buttons, table headers, rail heading */
+  --px-sm: 16px; /* chips, counts, eyebrows, tags */
+
+  /* Layout */
+  --gutter: 16px;
+  --gap: 22px;
+  --sidebar-w: 240px;
+  --rail-w: 220px;
+  --max-w: 1280px;
+}

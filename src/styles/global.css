@@ -1,0 +1,236 @@
+/*
+ * Global styles: base elements, the shared bevel surfaces, and prose (MDX body text).
+ * Component-specific styles live in each component's <style> block.
+ */
+@import '@fontsource/jersey-15/400.css';
+@import '@fontsource/tiny5/400.css';
+@import '@fontsource/work-sans/400.css';
+@import '@fontsource/work-sans/400-italic.css';
+@import '@fontsource/work-sans/500.css';
+@import '@fontsource/work-sans/600.css';
+@import '@fontsource/jetbrains-mono/400.css';
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 20px var(--gutter) 48px;
+  background-color: var(--dirt);
+  background-image: repeating-conic-gradient(var(--dirt-2) 0 25%, var(--dirt) 0 50%);
+  background-size: 16px 16px;
+  color: var(--ink);
+  font: var(--text-base) / 1.7 var(--font-body);
+  /* The pixel font has one weight; never fake bold or italic versions of it */
+  font-synthesis: none;
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- Bevelled surfaces ---------- */
+
+/* Raised stone panel (top bar, sidebar, rail) */
+.bev {
+  background: var(--panel);
+  border: 3px solid;
+  border-color: var(--bevel-hi) var(--bevel-lo) var(--bevel-lo) var(--bevel-hi);
+  box-shadow: 0 0 0 3px var(--edge);
+}
+
+/* Lighter panel that holds reading content */
+.paper {
+  background: var(--paper);
+  border: 3px solid;
+  border-color: var(--bevel-hi) var(--bevel-lo) var(--bevel-lo) var(--bevel-hi);
+  box-shadow: 0 0 0 3px var(--edge);
+  padding: 28px 36px 32px;
+  min-width: 0;
+}
+
+/* Inset slot, like an inventory slot */
+.slot {
+  background: var(--slot);
+  border: 2px solid;
+  border-color: var(--slot-dark) var(--bevel-hi) var(--bevel-hi) var(--slot-dark);
+}
+
+@media (max-width: 780px) {
+  .paper {
+    padding: 20px 18px 24px;
+  }
+}
+
+/* ---------- Prose: text written in MDX ---------- */
+
+/* Text keeps a readable measure; components inside prose choose their own width. */
+.prose > p,
+.prose > ul,
+.prose > ol,
+.prose > h1,
+.prose > h2,
+.prose > h3,
+.prose > blockquote {
+  max-width: var(--measure);
+}
+
+.prose > :first-child {
+  margin-top: 0;
+}
+
+.prose > :last-child {
+  margin-bottom: 0;
+}
+
+.prose p,
+.prose ul,
+.prose ol {
+  margin: 0 0 16px;
+}
+
+.prose a {
+  color: var(--link);
+}
+
+.prose h1 {
+  font: var(--px-h1) / 1.05 var(--font-pixel);
+  color: var(--title);
+  margin: 10px 0 18px;
+  text-wrap: balance;
+}
+
+.prose h2 {
+  font: var(--px-h2) / 1.1 var(--font-pixel);
+  color: var(--title);
+  margin: 40px 0 12px;
+  text-wrap: balance;
+  scroll-margin-top: 20px;
+}
+
+.prose h3 {
+  font: var(--px-h3) / 1.2 var(--font-pixel);
+  color: var(--title);
+  margin: 36px 0 10px;
+  text-wrap: balance;
+  scroll-margin-top: 20px;
+}
+
+/* A panel that starts with a heading shouldn't push it down */
+.paper > .prose > h1:first-child,
+.paper > .prose > h2:first-child {
+  margin-top: 0;
+}
+
+.prose code {
+  font: 0.85em var(--font-mono);
+  background: #d0d0d0;
+  padding: 1px 6px;
+}
+
+.prose pre {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  overflow-x: auto;
+  font-size: 14px;
+  line-height: 1.6;
+  border: 2px solid var(--edge);
+}
+
+.prose pre code {
+  font-size: inherit;
+  background: none;
+  padding: 0;
+}
+
+.prose blockquote {
+  margin: 0 0 16px;
+  padding-left: 16px;
+  border-left: 4px solid var(--slot);
+  color: var(--ink-2);
+}
+
+/* First paragraph after a heading-level title reads as the lede */
+.prose .lede,
+.prose h1 + p {
+  font-size: 19px;
+  line-height: 1.6;
+}
+
+.prose table {
+  border-collapse: collapse;
+  font-size: var(--text-small);
+  font-variant-numeric: tabular-nums;
+}
+
+.prose th,
+.prose td {
+  padding: 8px 14px;
+  text-align: left;
+  border-bottom: 1px solid #c6c6c6;
+}
+
+.prose thead th {
+  background: var(--slot);
+  color: #fff;
+  text-shadow: 1px 1px 0 var(--title);
+  font: var(--px-md) var(--font-pixel);
+}
+
+/* ---------- Button surface (shared by <Button> and section tiles) ---------- */
+
+.btn-surface {
+  background: var(--btn);
+  border: 2px solid;
+  border-color: var(--btn-hi) var(--btn-lo) var(--btn-lo) var(--btn-hi);
+  box-shadow: 0 0 0 2px var(--edge);
+  color: #fff;
+  text-shadow: var(--btn-text-shadow);
+  text-decoration: none;
+}
+
+a.btn-surface:hover,
+button.btn-surface:hover {
+  background: var(--btn-hover);
+  border-color: var(--btn-hover-hi) var(--btn-hover-lo) var(--btn-hover-lo) var(--btn-hover-hi);
+}
+
+.btn-surface[aria-current='page'],
+.btn-surface.is-pressed {
+  background: var(--btn-pressed);
+  border-color: var(--btn-lo) var(--btn-hi) var(--btn-hi) var(--btn-lo);
+}
+
+.btn-surface[aria-disabled='true'] {
+  background: #686868;
+  color: #c4c4c4;
+  text-shadow: 1px 1px 0 #3f3f3f;
+  cursor: not-allowed;
+}

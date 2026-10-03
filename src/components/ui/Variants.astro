@@ -1,0 +1,139 @@
+---
+/**
+ * A switcher between alternative versions of some content, with a picker bar above it.
+ * Handy for comparing drafts of copy, or showing alternatives side by side (two farm layouts, say).
+ *
+ *   <Variants id="intro" label="Intro draft">
+ *     <Variant name="Personal" note="First person">...</Variant>
+ *     <Variant name="Short">...</Variant>
+ *   </Variants>
+ *
+ * The first variant shows until the script runs (and if it never does). The reader's last
+ * choice is remembered per `id` in localStorage.
+ */
+interface Props {
+  /** Unique on the page. Also the key for remembering the choice. */
+  id: string;
+  label: string;
+  /** Extra line under the buttons, after the chosen variant's note. */
+  footnote?: string;
+}
+
+const { id, label, footnote } = Astro.props;
+---
+
+<div class="variants" data-variants={id} data-footnote={footnote}>
+  <div class="bar" role="group" aria-label={label}>
+    <b>{label}</b>
+    <div class="opts" data-opts></div>
+    <small data-note></small>
+  </div>
+  <div class="items" data-items>
+    <slot />
+  </div>
+</div>
+
+<script>
+  const KEY = 'dwcmc:variants:';
+
+  for (const root of document.querySelectorAll<HTMLElement>('[data-variants]')) {
+    const id = root.dataset.variants!;
+    const opts = root.querySelector<HTMLElement>('[data-opts]')!;
+    const note = root.querySelector<HTMLElement>('[data-note]')!;
+    const items = [...root.querySelectorAll<HTMLElement>(':scope > [data-items] > [data-variant]')];
+    if (!items.length) continue;
+
+    const buttons = items.map((item, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = `${String.fromCharCode(65 + i)} · ${item.dataset.name ?? `Option ${i + 1}`}`;
+      b.addEventListener('click', () => select(i));
+      opts.appendChild(b);
+      return b;
+    });
+
+    function select(i: number) {
+      items.forEach((item, j) => (item.hidden = j !== i));
+      buttons.forEach((b, j) => b.setAttribute('aria-pressed', String(j === i)));
+      const parts = [items[i]!.dataset.note, root.dataset.footnote].filter(Boolean);
+      note.textContent = parts.join(' ');
+      note.hidden = parts.length === 0;
+      try {
+        localStorage.setItem(KEY + id, items[i]!.dataset.name ?? String(i));
+      } catch {
+        /* storage unavailable: the choice just isn't remembered */
+      }
+    }
+
+    let start = 0;
+    try {
+      const saved = localStorage.getItem(KEY + id);
+      const found = items.findIndex((item) => item.dataset.name === saved);
+      if (found >= 0) start = found;
+    } catch {
+      /* ignore */
+    }
+    root.dataset.ready = '';
+    select(start);
+  }
+</script>
+
+<style>
+  .variants {
+    display: grid;
+    gap: 16px;
+    margin: 0 0 16px;
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    border: 2px dashed var(--gold);
+    background: #000000cc;
+    color: #f2f2f2;
+    padding: 10px 14px;
+    font: 14px/1.4 var(--font-body);
+  }
+
+  .bar b {
+    font: var(--px-md) / 1 var(--font-pixel);
+    color: var(--gold);
+  }
+
+  .opts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .opts :global(button) {
+    font: var(--px-sm) / 1 var(--font-pixel);
+    background: #2a2a2a;
+    color: #e0e0e0;
+    border: 1px solid #6a6a6a;
+    padding: 7px 10px;
+    cursor: pointer;
+  }
+
+  .opts :global(button:hover) {
+    border-color: #fff;
+  }
+
+  .opts :global(button[aria-pressed='true']) {
+    background: var(--gold);
+    color: #1a1a1a;
+    border-color: var(--gold);
+  }
+
+  .bar small {
+    flex-basis: 100%;
+    color: #bdbdbd;
+  }
+
+  /* Before the script runs, show only the first variant */
+  .variants:not([data-ready]) .items > :global([data-variant]:not(:first-child)) {
+    display: none;
+  }
+</style>

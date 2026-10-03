@@ -1,0 +1,71 @@
+---
+title: Designing a mob farm
+description: The rules behind a good 1.1 mob farm, and how to use them to design your own underground spawner-free farm.
+section: farms
+order: 5
+versions: ['1.0', '1.1']
+---
+
+import { Callout, Unconfirmed } from '@/components/ui';
+
+<p class="lede">
+  The earliest mob farms were big dark floors with trapdoors over water, and they mostly worked. The better
+  ones from the same era used small 3 × 3 pads instead. Here's why, and how to design your own.
+</p>
+
+These rules come from [hostile mob spawning](/mechanics/mob-spawning/) and [fall damage](/mechanics/fall-damage/). For a complete design that uses all of them, see [Etho's practical mob system](/farms/ethos-mob-system/).
+
+## The short version
+
+- Build **small, completely dark pads** surrounded by **water channels**, not big open floors.
+- Keep every spawn spot **a step or two from water**.
+- Give the pads a ceiling **exactly 2 blocks high**, so endermen can't spawn.
+- Put a **slab or block in the middle of each 3 × 3 pad**, so spiders can't spawn.
+- Stand **24 to 32 blocks** from every pad block while you wait.
+- **Light, fill or flood every cave within about 128 blocks**, and deal with slime chunks below Y 40.
+- Drop the mobs **22 blocks** for one-hit kills, or **into water** to bring them down unhurt.
+
+## Small pads beat big floors
+
+Mobs only reach your water by wandering into it, and they don't seem to wander for long (see below). On a big floor, most spawns stop moving long before they reach water and just stand there taking up the cap. On a 3 × 3 pad ringed by water, every spawn spot is one or two steps from a channel, so mobs fall in almost straight away.
+
+<Unconfirmed basis="Seen in 1.2 and Beta 1.8.1 code, not checked in 1.1">
+  How long mobs wander. The code suggests about 5 seconds after spawning. The small-pad design is the right
+  call either way, but the exact time decides how far a spawn spot can safely be from water.
+</Unconfirmed>
+
+## Keeping spiders and endermen out
+
+Spiders need a clear 3 × 3 area around the block they spawn on, and endermen need 3 blocks of headroom.
+
+- **Spiders:** a spider is 1.4 blocks wide and spawns centred on a block, so the whole 3 × 3 area around that block has to be clear. Put a stone slab on the middle block of each 3 × 3 pad: it sits inside that area for all 8 blocks around it. A wall beside a spawning block stops spiders the same way.
+- **Endermen:** make the ceiling over every pad exactly 2 blocks high. Zombies, skeletons and creepers still fit.
+
+## Where to stand
+
+Nothing spawns within 24 blocks of you. Mobs more than 32 blocks away start to despawn, and may stop moving. So the best spot is **24 to 32 blocks from every pad block**. Measure it out before you build, because it limits how big the spawning area can be.
+
+## Starve every other dark space
+
+The hostile cap is about 79 for one player, and it counts every hostile mob that's loaded, including ones standing in caves you've never visited. Every one of them is a slot your farm can't use.
+
+- **Light** every cave within about 128 blocks of where you'll stand. In tunnels, a torch every 10 blocks is enough.
+- **Fill in or flood** caves you don't want to light. Nothing spawns in water.
+- **Slimes** ignore light. In slime chunks below Y 40 they spawn in any small gap and count towards the cap. Flood or fill those spaces.
+
+## Moving and killing the mobs
+
+Water channels carry the mobs to a drop. From there:
+
+- **For one-hit kills**, drop them 22 blocks onto solid ground. Zombies, skeletons and creepers land on one hit point. This is also how the classic farms got XP from mobs: you get it when you land the final hit.
+- **To bring them down unhurt** (for example to a lower collection level), land them in water. A landing in water cancels any fall.
+
+<Callout icon="egg" title="Test before you build" subtitle="Spawn eggs are new in 1.1">
+  Build one pad, one channel and one drop in a creative copy of your world. Use spawn eggs to check that mobs
+  reach the water, that spiders and endermen can't spawn, and that the drop does what you expect.
+</Callout>
+
+## Sources
+
+- See the sources on [hostile mob spawning](/mechanics/mob-spawning/#sources) and [fall damage](/mechanics/fall-damage/#sources).
+- EthosLab, [Minecraft - Tutorial: Practical Mob System](https://www.youtube.com/watch?v=3S5x3qxl8s8), YouTube, 7 August 2012.

@@ -1,0 +1,91 @@
+---
+/**
+ * Which versions a page or section applies to: a row of version chips, lit for the
+ * versions where the content holds. Every chip is always shown, so a reader can see
+ * at a glance where a rule starts and stops.
+ *
+ *   <AppliesTo versions={['1.0', '1.1', '1.2']} />
+ *   <AppliesTo versions={['1.1', '1.2']} note="Bows can't be enchanted in 1.0." />
+ *
+ * Article pages show one under the title automatically from the `versions` frontmatter.
+ * Put one straight after a heading when a section differs from the rest of the page.
+ */
+import { APPLIES_VERSIONS, describeVersions, type AppliesVersion } from '@/lib/versions';
+
+interface Props {
+  versions: AppliesVersion[];
+  note?: string;
+  label?: string;
+}
+
+const { versions, note, label = 'Applies to' } = Astro.props;
+const on = new Set<string>(versions);
+---
+
+<div class="applies">
+  <span class="label">{label}</span>
+  <ol class="chips" aria-hidden="true">
+    {APPLIES_VERSIONS.map((v) => (
+      <li
+        class:list={[on.has(v.id) ? 'on' : 'off']}
+        title={on.has(v.id) ? `Applies to ${v.name}` : `Doesn't apply to ${v.name}`}
+      >
+        {v.label}
+      </li>
+    ))}
+  </ol>
+  <span class="visually-hidden">{describeVersions(versions)}</span>
+  {note && <span class="note">{note}</span>}
+</div>
+
+<style>
+  .applies {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 10px;
+    margin: 0 0 18px;
+  }
+
+  .label {
+    font: var(--px-sm) / 1 var(--font-pixel);
+    color: var(--ink-2);
+  }
+
+  .chips {
+    display: flex;
+    gap: 3px;
+    margin: 0;
+    padding: 3px;
+    list-style: none;
+    background: var(--slot-dark);
+    border: 2px solid var(--edge);
+  }
+
+  li {
+    min-width: 36px;
+    padding: 5px 6px 4px;
+    text-align: center;
+    font: var(--px-sm) / 1 var(--font-pixel);
+    border: 2px solid;
+  }
+
+  .on {
+    background: var(--applies-on);
+    border-color: var(--applies-on-hi) var(--applies-on-lo) var(--applies-on-lo) var(--applies-on-hi);
+    color: #fff;
+    text-shadow: 1px 1px 0 var(--applies-on-lo);
+  }
+
+  .off {
+    background: var(--applies-off);
+    border-color: var(--applies-off-lo) var(--applies-off-hi) var(--applies-off-hi) var(--applies-off-lo);
+    color: var(--applies-off-text);
+  }
+
+  .note {
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--ink-2);
+  }
+</style>

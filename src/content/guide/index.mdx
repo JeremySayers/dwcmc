@@ -1,0 +1,157 @@
+---
+title: Home
+description: A field guide to Minecraft Java Edition 1.1 — its mechanics, farms and builds, and why 1.1 is worth playing.
+section: start
+order: 0
+template: panels
+---
+
+import {
+  Actions,
+  AppliesTo,
+  Button,
+  Callout,
+  Eyebrow,
+  Item,
+  ItemList,
+  Panel,
+  VersionStrip,
+} from '@/components/ui';
+import SectionTiles from '@/components/home/SectionTiles.astro';
+
+<Panel id="intro">
+
+<Eyebrow>Minecraft Java Edition 1.1 · released 12 January 2012</Eyebrow>
+
+# Why I keep coming back to 1.1.
+
+Newer versions of Minecraft have more of everything. More blocks, more mobs, more systems to learn. For me, more of everything is part of the problem.
+
+Minecraft has always been about working with what you have. When oak planks, cobblestone and glass are most of your palette, you stop scrolling through options and start solving problems. A farm becomes a puzzle you work out yourself, not a design you copy because a newer block makes it trivial.
+
+1.1 is a simpler game. You can hold every mechanic in your head at once. I'm not much of an artist, and a short block list means I can still build something I'm proud of. This site is everything I've learned about playing it: the mechanics, the farms and the builds.
+
+<Actions>
+  <Button href="#purpose">Why this site exists</Button>
+  <Button href="#why">Why 1.1?</Button>
+</Actions>
+
+</Panel>
+
+<Panel id="purpose">
+
+## Why this site exists
+
+<p class="lede">Accurate information about 1.1 is surprisingly hard to find.</p>
+
+Minecraft has changed so much since 2012 that almost everything written about it today describes a different game. Search for how enchanting works and you get the 1.3 rules. Search for an iron farm and you get a mob that 1.1 doesn't have. The wikis describe the current version, and the 1.1 details are buried in history notes, if they made it in at all.
+
+Working out how something really behaved in 1.1 has meant digging through old forum threads, scrubbing through Let's Plays recorded at the time, and sometimes reading the game's code. I wanted all of that in one place, checked, for anyone else who wants to try playing older Minecraft.
+
+### Before it disappears
+
+It's also about keeping this information around. The places that hold it are disappearing:
+
+- Forums shut down, or survive without the images that made their posts make sense.
+- Farm designs from 2012 link to image hosts and download sites that died years ago.
+- Wiki pages get rewritten for the current version, and older details drop out.
+- Videos get deleted, made private, or vanish with the channels that posted them.
+
+Once they're gone, nobody can check how the game used to work. This site is my attempt to write it down while it can still be checked.
+
+### What each page covers
+
+Most of 1.1 works the same in 1.0 or 1.2, and some farms work in any version. So every page shows which versions it applies to, like this:
+
+<AppliesTo versions={['1.0', '1.1', '1.2']} />
+
+When one section is different, it gets its own row. On the [enchanting page](/mechanics/enchanting/), the section on bows only lights up 1.1 and 1.2, because bows couldn't be enchanted in 1.0. Every page also lists its sources, so you can check them yourself.
+
+</Panel>
+
+<Panel id="why">
+
+## Why 1.1?
+
+<p class="lede">
+  Every version of Minecraft is somebody's favourite. This guide picks 1.1 on purpose, and stops there on
+  purpose.
+</p>
+
+<VersionStrip current="1.1" />
+
+### Why not Beta or 1.0
+
+Beta 1.8 had no enchanting, no brewing and no End. 1.0 added all three in November 2011 and made Minecraft a finished game. Two months later, 1.1 fixed the things that still felt unfinished:
+
+<ItemList>
+  <Item icon="wool" title="Sheep regrow their wool">
+    A sheared sheep grows its wool back by eating grass. A small pen is a wool farm.
+  </Item>
+  <Item icon="beach" title="Beaches">
+    Sand and sandstone between land and ocean, so coastlines look the way you expect.
+  </Item>
+  <Item icon="apple" title="Apples from oak leaves">
+    One in 200 oak leaves drops an apple, so golden apples are something you can actually make.
+  </Item>
+  <Item icon="bow" title="Bow enchantments">
+    Power, Punch, Flame and Infinity. Bows get a reason to visit the enchanting table.
+  </Item>
+  <Item icon="melon" title="Melons and pumpkins on dirt">
+    Stems can grow fruit onto plain dirt, not only farmland.
+  </Item>
+  <Item icon="gate" title="Fence gates with redstone">
+    Gates open and close from a lever, button or pressure plate.
+  </Item>
+  <Item icon="disc" title="Music discs you can find">
+    Eight discs drop when a skeleton's arrow kills a creeper.
+  </Item>
+  <Item icon="egg" title="Superflat and spawn eggs">
+    A flat world type and creative-mode spawn eggs for testing farms and builds.
+  </Item>
+</ItemList>
+
+### Why stop before 1.2
+
+1.2 is a good update, and it's the closest call. It also starts to change the core loops that make 1.1 work.
+
+<ItemList columns={1}>
+  <Item icon="golem" title="Iron golems" tag="1.2">
+    Villages spawn golems that drop iron, and you can build your own. Once iron comes from a village, mining
+    for it starts to feel optional.
+  </Item>
+  <Item icon="planks" title="A lot more blocks" tag="1.2">
+    Spruce, birch and jungle planks, cut and chiseled sandstone, chiseled stone bricks. Great if you have a
+    strong eye for design. For everyone else, more options means more second-guessing and less building.
+  </Item>
+</ItemList>
+
+<Callout icon="lamp" title="What 1.1 gives up" subtitle="Redstone lamp · added in 1.2">
+  A light you can switch on and off is the one thing from 1.2 that's hard to live without. The guide covers
+  the 1.1 workarounds, like pistons that slide glowstone in and out of a wall.
+</Callout>
+
+### Why not 1.3
+
+<ItemList columns={1}>
+  <Item icon="emerald" title="Villager trading" tag="1.3">
+    Emeralds buy diamond gear, food and more, so one good village can stand in for mining, farming and
+    fighting. It turns exploring into shopping.
+  </Item>
+  <Item icon="book" title="New enchanting rules" tag="1.3">
+    The highest level dropped from 50 to 30, bookshelves from 30 to 15, and the XP curve changed. The
+    calculators on this site only make sense for 1.1.
+  </Item>
+</ItemList>
+
+</Panel>
+
+<Panel id="guide">
+
+## What's in the guide
+
+Everything here is about 1.1 and only 1.1. If a farm needs a hopper or an iron golem, you won't find it here.
+
+<SectionTiles />
+
+</Panel>

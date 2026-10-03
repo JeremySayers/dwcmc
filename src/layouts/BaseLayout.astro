@@ -1,0 +1,130 @@
+---
+import '@/styles/global.css';
+import type { MarkdownHeading } from 'astro';
+import TopBar from '@/components/layout/TopBar.astro';
+import Sidebar from '@/components/layout/Sidebar.astro';
+import Rail from '@/components/layout/Rail.astro';
+import { getNav } from '@/lib/guide';
+import type { SectionId } from '@/lib/sections';
+
+interface Props {
+  /** Page title. The home page passes null to use the site name alone. */
+  title: string | null;
+  description: string;
+  currentId?: string;
+  currentSection?: SectionId | null;
+  headings?: MarkdownHeading[];
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  currentId = '',
+  currentSection = null,
+  headings = [],
+  noindex = false,
+} = Astro.props;
+
+const SITE = 'DWCMC';
+const fullTitle = title ? `${title} · ${SITE}` : `${SITE} · A field guide to Minecraft 1.1`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const nav = await getNav();
+const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const hasRail = toc.length > 0;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#1d1610" />
+    <meta property="og:site_name" content={SITE} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+  </head>
+  <body id="top">
+    <a class="skip" href="#main">
+      Skip to content
+    </a>
+    <TopBar nav={nav} currentSection={currentSection} isHome={currentId === 'index'} />
+    <div class:list={['shell', { 'has-rail': hasRail }]}>
+      <Sidebar nav={nav} currentId={currentId} />
+      <main id="main" class="main">
+        <slot />
+      </main>
+      {hasRail && <Rail toc={toc} />}
+    </div>
+    <footer class="foot">Fan project. Not affiliated with Mojang or Microsoft. No game textures used.</footer>
+  </body>
+</html>
+
+<style>
+  .shell {
+    display: grid;
+    grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+    gap: var(--gap);
+    max-width: var(--max-w);
+    margin: 0 auto;
+    align-items: start;
+  }
+
+  .has-rail {
+    grid-template-columns: var(--sidebar-w) minmax(0, 1fr) var(--rail-w);
+  }
+
+  .main {
+    display: grid;
+    gap: var(--gap);
+    min-width: 0;
+  }
+
+  .foot {
+    max-width: var(--max-w);
+    margin: 28px auto 0;
+    text-align: center;
+    color: var(--on-dirt);
+    font-size: var(--text-tiny);
+  }
+
+  .skip {
+    position: absolute;
+    left: 16px;
+    top: -60px;
+    z-index: 10;
+    background: var(--gold);
+    color: #1a1a1a;
+    padding: 8px 12px;
+    font: var(--px-md) var(--font-pixel);
+  }
+
+  .skip:focus {
+    top: 12px;
+  }
+
+  @media (max-width: 1140px) {
+    .shell,
+    .has-rail {
+      grid-template-columns: 230px minmax(0, 1fr);
+    }
+
+    .shell > :global(.rail) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 780px) {
+    .shell,
+    .has-rail {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 18px;
+    }
+  }
+</style>

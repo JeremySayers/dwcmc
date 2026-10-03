@@ -1,0 +1,106 @@
+---
+title: Etho's practical mob system
+navTitle: Etho's mob system
+description: EthosLab's compact, redstone-free hostile mob farm from 2012, with layer-by-layer diagrams and the full build order.
+section: farms
+order: 10
+eyebrow: Farms · Design by EthosLab
+versions: ['1.0', '1.1', '1.2', '1.3']
+---
+
+import { AppliesTo, Callout, LayerDiagram, Unconfirmed } from '@/components/ui';
+import { ETHOS_LAYERS } from '@/lib/designs/ethos-mob-system';
+
+<p class="lede">
+  A compact hostile mob farm with no redstone and no pistons. Each layer is 19 × 19 and 5 blocks high, and you
+  stack as many layers as you need. Mobs spawn on small pads, walk off into water, and the water carries them
+  to a drop in the middle.
+</p>
+
+<Callout
+  icon="map"
+  title="Designed by EthosLab"
+  subtitle="Minecraft - Tutorial: Practical Mob System · 7 August 2012"
+>
+  Etho built this in his Let's Play and explained it in a [tutorial
+  video](https://www.youtube.com/watch?v=3S5x3qxl8s8). The numbers and build order on this page come from that
+  video. It was filmed around 1.3, but every block and rule it relies on is already in 1.1.
+</Callout>
+
+| At a glance       |                                                                                        |
+| ----------------- | -------------------------------------------------------------------------------------- |
+| Footprint         | 19 × 19                                                                                |
+| Height per layer  | 5 blocks (6 if you want endermen)                                                      |
+| Spawning spaces   | 100 per layer                                                                          |
+| Blocks per layer  | 740: 728 building blocks and 12 stone slabs (five layers: about 3,700, a double chest) |
+| Water sources     | 8 per layer                                                                            |
+| Redstone, pistons | None                                                                                   |
+| Layers            | 5 to 10                                                                                |
+
+**Good:** compact, quick and cheap to build, and it doesn't cause lag, because the water never changes once it's placed and nothing moves. **Not so good:** nothing pushes mobs off the pads, so they have to walk off on their own, and some get stuck.
+
+## How it works
+
+Each layer has **12 pads**, each 3 × 3 and 2 blocks tall, standing in water channels. Mobs spawn on the **8 edge blocks** of each pad. Four more spawning spaces sit on blocks placed over the corner water sources: **100 spaces** per layer.
+
+A mob walks off a pad, drops 2 blocks into the water, and the current carries it to the **hole in the middle**, where it falls through the centre of every layer below. Water from the end of each arm flows 7 blocks and stops one block short of the hole, so you don't need signs to hold it back.
+
+- **No spiders.** A spider is 1.4 blocks wide and spawns centred on a block, so it needs the whole 3 × 3 area around that block to be clear. The stone slab in the middle of each pad is inside that area for all 8 edge blocks, so spiders can't spawn anywhere on the pad.
+- **No endermen.** The next layer's floor sits right on top of the walls, so each pad has 2 blocks of headroom. Endermen need 3.
+
+## Layer by layer
+
+<LayerDiagram
+  layers={ETHOS_LAYERS}
+  label="One layer of Etho's mob system"
+  footnote="Stack 5 to 10 layers. Each layer's floor goes straight on top of the walls of the one below."
+/>
+
+## Building it
+
+Etho builds each layer in this order:
+
+1. **Lay the floor.** Pick the centre, leave that one block open, and spread the floor out in the shape of the bottom map.
+2. **Place the bottom block of all 12 pads.** It shows you how far the floor needs to reach.
+3. **Build up the walls,** leaving the 8 water spots open: the end of each arm and each corner of the ring.
+4. **On the second block up, cover each ring-corner water spot** with a block. These are the four bonus spawning spaces.
+5. **Finish the walls** to 4 blocks above the floor.
+6. **Add the top block of each pad last,** so you can still jump around the layer while you build.
+7. **Place the water.** Etho suggests bringing ice instead of buckets. It stacks, and breaking it leaves a water source.
+8. **Put a stone slab on the middle of each pad.**
+9. **Start the next layer's floor** straight on top of the walls.
+
+## Stacking and killing
+
+Etho recommends **5 to 10 layers**. In his test world, where nothing else could spawn, 5 layers reached the hostile cap of about 79 within a minute or so. In a normal world, caves you missed take part of the cap, so more layers help. More layers also spread the mobs out, so they jam less in the middle.
+
+Past 10 layers, your time is better spent lighting caves. The whole farm has a few hundred spawning spaces, and the caves around you have thousands. See [the mob cap](/mechanics/mob-spawning/#the-mob-cap).
+
+Build the bottom layer **at least 24 blocks above the ground**, so the fall through the middle kills the mobs. Etho calls it the quickest way to get lots of drops. Mobs killed by a fall don't drop experience, though. If you want XP, make the drop 22 blocks so they land on one hit point, and finish them yourself (see [fall damage](/mechanics/fall-damage/)).
+
+Five layers plus a cover on top is 26 blocks tall.
+
+## Letting endermen in
+
+Add one more block to the walls before you start each new layer, making layers 6 blocks high. That gives the pads 3 blocks of headroom. Build from something endermen can't pick up, so not dirt, grass or sand.
+
+## Differences in 1.1
+
+### The lamp switch
+
+<AppliesTo versions={['1.2', '1.3', '1.4+']} note="Redstone lamps arrived in 1.2." />
+
+In the video, Etho puts 8 redstone lamps in each layer's ceiling so he can switch the farm off. Lamps aren't in 1.1. To stop it spawning, put a torch on each pad.
+
+### Mobs getting stuck on pads
+
+Etho says that a few updates before the video, mobs gained an idle timer: a mob more than 32 blocks from a player can go to sleep and stop moving. Mobs asleep on a pad stay there until they despawn, which is this design's main weakness.
+
+<Unconfirmed basis="EthosLab says the idle timer was added 'a few patches' before August 2012">
+  Whether 1.1 has the idle timer yet. If it doesn't, mobs never go to sleep on the pads and the farm should
+  run better in 1.1 than in the video. If it does, stand where the pads you care about are within 32 blocks.
+</Unconfirmed>
+
+## Sources
+
+- EthosLab, [Minecraft - Tutorial: Practical Mob System](https://www.youtube.com/watch?v=3S5x3qxl8s8), YouTube, 7 August 2012: the design, the numbers and the build order.

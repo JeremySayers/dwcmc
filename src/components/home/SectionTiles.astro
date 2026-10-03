@@ -1,0 +1,94 @@
+---
+/**
+ * One tile per guide section (except "Start here"), linking to the section's first written page.
+ * Counts come from the content collection, so they stay right as pages are added.
+ */
+import PixelIcon from '@/components/ui/PixelIcon.astro';
+import { getNav } from '@/lib/guide';
+
+const groups = (await getNav()).filter((g) => g.section.inTopNav);
+---
+
+<div class="tiles">
+  {groups.map((g) => {
+    const written = g.pages.filter((p) => p.href).length;
+    const count = written > 0 ? `${written} ${written === 1 ? 'page' : 'pages'}` : 'Coming soon';
+    const inner = (
+      <>
+        <div class="ic slot">
+          <PixelIcon name={g.section.icon} size={34} />
+        </div>
+        <div>
+          <b>
+            {g.section.name}
+            <small>{count}</small>
+          </b>
+          <span>{g.section.blurb}</span>
+        </div>
+      </>
+    );
+    return g.firstHref ? (
+      <a class="tile btn-surface" href={g.firstHref}>
+        {inner}
+      </a>
+    ) : (
+      <div class="tile btn-surface" aria-disabled="true">
+        {inner}
+      </div>
+    );
+  })}
+</div>
+
+<style>
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  .tile {
+    /* Beat .prose a, which would otherwise make linked tiles blue and underlined */
+    color: #fff;
+    text-decoration: none;
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    gap: 14px;
+    align-items: start;
+    padding: 14px;
+  }
+
+  .ic {
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+  }
+
+  b {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    font: var(--px-xl) / 1.1 var(--font-pixel);
+  }
+
+  small {
+    font-size: 14px;
+    color: #e8e8e8;
+  }
+
+  span {
+    display: block;
+    margin-top: 4px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #f2f2f2;
+    text-shadow: 1px 1px 0 #3f3f3f80;
+  }
+
+  @media (max-width: 780px) {
+    .tiles {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

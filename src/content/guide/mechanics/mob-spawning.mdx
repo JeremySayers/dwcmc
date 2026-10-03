@@ -1,0 +1,114 @@
+---
+title: Hostile mob spawning
+navTitle: Mob spawning
+description: Where hostile mobs can spawn in 1.1, how many can exist at once, when they despawn, and how they move.
+section: mechanics
+order: 30
+versions: ['1.0', '1.1']
+---
+
+import { Callout, Unconfirmed } from '@/components/ui';
+
+<p class="lede">
+  Every mob farm in 1.1 is built on a handful of rules: where a mob is allowed to spawn, how many can exist at
+  once, when the game removes them, and how they move once they're here. This page covers all four.
+</p>
+
+<Callout icon="compass" title="Most mob farm advice is for a different game" subtitle="Reworked after 1.1">
+  Mob movement, spawning and the cap were reworked several times after 1.1. Designs built for later versions
+  often rely on behaviour 1.1 doesn't have, so check which version a farm was built for before copying it.
+</Callout>
+
+## Where a hostile mob can spawn
+
+For a hostile mob to spawn on a block, all of these have to be true:
+
+- **It's dark.** The light level where the mob's feet would be is 7 or lower. The darker it is, the more likely a spawn.
+- **It's not too close to you.** Nothing spawns within 24 blocks of a player.
+- **It's not too far from you.** Mobs only spawn in the area loaded around a player, about 128 blocks out in every direction (8 chunks each way).
+- **There's a solid block underneath** and the mob isn't in water.
+- **The mob fits.** The space above the floor has to be big enough for that mob.
+
+| Mob                         | Floor space | Headroom |
+| --------------------------- | ----------- | -------- |
+| Zombie, skeleton, creeper   | 1 × 1       | 2 blocks |
+| Spider                      | 3 × 3       | 1 block  |
+| Enderman                    | 1 × 1       | 3 blocks |
+| Slime (smallest; see below) | 1 × 1       | 1 block  |
+
+That table is the basis of most farm tricks. A room with a 2-block ceiling can't spawn endermen.
+
+Spiders are the odd one out. A spider is 1.4 blocks wide and spawns centred on a block, so it needs the whole 3 × 3 area around that block to be clear. One block, or even a slab, in the middle of a 3 × 3 pad stops spiders spawning on any of the 8 blocks around it. That's the trick in [Etho's mob system](/farms/ethos-mob-system/).
+
+<Unconfirmed basis="Seen in 1.2 and Beta 1.8.1 code, not checked in 1.1">
+  Exactly which blocks count as a valid floor (slabs, glass, trapdoors and so on), and some mob hitbox sizes.
+  Test a floor block in a creative copy with spawn eggs before building a whole farm on it.
+</Unconfirmed>
+
+## The mob cap
+
+There's a limit on how many hostile mobs can exist at once around you. For one player it's about **79**: the base cap of 70, scaled by the number of loaded chunks (17 × 17 = 289 chunks, so 70 × 289 ÷ 256).
+
+The cap counts **every** loaded hostile mob, not only the ones in your farm. A zombie standing in a dark cave 100 blocks away takes a slot your farm could have used. That's why lighting matters so much for farm rates: every dark cave within about 128 blocks competes with your spawning pads.
+
+To free up the cap, light every cave within that range, fill them in, or flood them. Nothing spawns in water.
+
+## Slimes
+
+Slimes play by different rules. They spawn in **slime chunks**, about 1 in 10 chunks, chosen by the world seed, and only **below Y 40**. Light doesn't stop them.
+
+Slimes, including the small ones a big slime splits into, **count towards the hostile cap**. A slime chunk with open caves below Y 40 near your farm can quietly fill part of it, and torches won't help.
+
+- **Flood it.** Nothing spawns in water.
+- **Fill it in.** Small slimes fit in 1-block gaps, so any air above solid floor below Y 40 in a slime chunk can spawn them.
+- **Find the chunks first.** You can't see slime chunks in the game, but slimes wandering through a lit cave below Y 40 give them away. Only those chunks need dealing with.
+
+Slimes despawn by the same distance rules as other hostile mobs, but while one exists it takes a cap slot.
+
+## Despawning
+
+How far a mob is from the nearest player decides whether it can despawn:
+
+- **More than 128 blocks away:** it's removed straight away.
+- **Between 32 and 128 blocks away:** once it has gone about 30 seconds without a player within 32 blocks, it has a small random chance to despawn every tick, so far-off mobs disappear over the following minute or so.
+- **Within 32 blocks:** it never despawns.
+
+<Unconfirmed basis="EthosLab (August 2012) says this was added 'a few patches ago'">
+  Mobs more than 32 blocks from a player can go idle and stop moving until a player comes back within 32
+  blocks. Etho describes this as a recent change in 2012, so it may not exist in 1.1 yet. If it does, mobs on
+  a pad more than 32 blocks away won't walk into your water channels at all.
+</Unconfirmed>
+
+## How mobs move
+
+A newly spawned mob wanders at random. It isn't looking for anything in particular unless it notices a player, so whether it ends up in your collection system is down to where it spawned and how much it wanders.
+
+<Unconfirmed basis="Seen in 1.2 and Beta 1.8.1 code, not checked in 1.1">
+  Mobs only wander at random for about the first 5 seconds after they spawn. That would explain why big open
+  spawning floors work poorly in 1.1, and why every spawn spot in a good farm is only a step or two from
+  water.
+</Unconfirmed>
+
+**In water**, mobs jump about 80% of the time, so they bob at the surface instead of sinking, and flowing water carries them along. A mob in a water channel goes wherever the current goes. That's what makes the classic designs work: spawn mobs next to water, and let the water do the rest.
+
+## Lighting tunnels and caves
+
+A torch gives light level 14, and light drops by 1 for every block it travels. Mobs can spawn at light 7 or below, so every floor block needs a light level of at least 8.
+
+In a straight tunnel 1 block wide and 2 blocks high:
+
+- **Torch at foot level** (on the floor, or low on the wall): the floor stays at light 8 or more for 6 blocks each way. Place a torch **every 13 blocks**.
+- **Torch at head height** (high on the wall): the floor below it starts at 13, so it covers 5 blocks each way. Place a torch **every 11 blocks**.
+
+A torch every 10 blocks is easy to count while you're mining and leaves a margin.
+
+On a **staircase**, light loses 2 levels per step, because it travels one block across and one down. A torch on a step covers 3 steps each way, so place one at least every 7 steps. Every 5 or 6 is safer.
+
+Only zombies, skeletons and creepers can spawn in a 1 × 2 tunnel. Spiders are too wide and endermen are too tall.
+
+## Sources
+
+- Decompiled game code for Beta 1.8.1 and 1.2.5. 1.1 sits between them, but where a rule above is only known from these, it's marked as not yet confirmed.
+- [Minecraft Wiki: Java Edition 1.2 releases](https://minecraft.wiki/w/Java_Edition_guides/1.2_releases), for what changed after 1.1.
+- EthosLab, [Minecraft - Tutorial: Practical Mob System](https://www.youtube.com/watch?v=3S5x3qxl8s8), YouTube, 7 August 2012: spider spacing, the cap of about 79, the idle timer and light levels.
+- Mob farm videos and Minecraft Forum threads from 2011–2012.

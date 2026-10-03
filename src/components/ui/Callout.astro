@@ -1,0 +1,91 @@
+---
+/**
+ * A callout styled like an in-game item tooltip. Use it for the one thing on a page
+ * the reader shouldn't miss: a trade-off, a version difference, a trap.
+ */
+import PixelIcon from './PixelIcon.astro';
+import type { IconName } from '@/lib/icons';
+
+interface Props {
+  title: string;
+  /** Grey line under the title, like an item's lore line. */
+  subtitle?: string;
+  icon?: IconName;
+}
+
+const { title, subtitle, icon } = Astro.props;
+---
+
+<aside class:list={['callout', { 'has-icon': icon }]} role="note">
+  {icon && (
+    <div class="ic">
+      <PixelIcon name={icon} />
+    </div>
+  )}
+  <div>
+    <b>{title}</b>
+    {subtitle && <em>{subtitle}</em>}
+    <div class="body">
+      <slot />
+    </div>
+  </div>
+</aside>
+
+<style>
+  .callout {
+    background: var(--tip);
+    border: 2px solid var(--tip-border);
+    box-shadow: inset 0 0 0 1px var(--tip-glow);
+    color: #fff;
+    padding: 14px 18px;
+    margin: 22px 0;
+    max-width: var(--measure);
+  }
+
+  .has-icon {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+
+  .ic {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    background: #2a2a2a;
+    border: 2px solid;
+    border-color: #151515 #6a6a6a #6a6a6a #151515;
+  }
+
+  b {
+    display: block;
+    font: var(--px-lg) / 1.2 var(--font-pixel);
+    color: var(--gold);
+  }
+
+  em {
+    font: normal var(--px-sm) / 1.4 var(--font-pixel);
+    color: var(--tip-muted);
+  }
+
+  .body {
+    margin-top: 6px;
+    font-size: var(--text-small);
+    line-height: 1.55;
+    color: #e8e8e8;
+  }
+
+  .body :global(p) {
+    margin: 0 0 8px;
+  }
+
+  .body :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .body :global(a) {
+    color: #9fc4ff;
+  }
+</style>

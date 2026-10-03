@@ -1,0 +1,70 @@
+---
+title: Fall damage and safe drops
+navTitle: Fall damage
+description: How much damage a fall does in 1.1, what cancels it, and how to move mobs down safely or soften them up for one hit.
+section: mechanics
+order: 35
+versions: ['1.0', '1.1']
+---
+
+import { AppliesTo, Callout, Unconfirmed } from '@/components/ui';
+
+<p class="lede">
+  Mob farms move mobs downwards, either gently so they arrive unhurt, or a long way so they arrive on one hit
+  point. Both depend on the same rule.
+</p>
+
+## How much a fall hurts
+
+A fall does **fall distance minus 3** damage, rounded up, in half-hearts. Three blocks or less is free.
+
+| Fall (blocks) | Damage (half-hearts) | A 20-health mob is left with |
+| ------------: | -------------------: | ---------------------------- |
+|             3 |                    0 | 20 (unhurt)                  |
+|             4 |                    1 | 19                           |
+|             5 |                    2 | 18                           |
+|            10 |                    7 | 13                           |
+|            22 |                   19 | 1: one hit kills it          |
+|            23 |                   20 | 0: the fall kills it         |
+
+Zombies, skeletons and creepers have 20 health (10 hearts), so a **22-block drop** leaves them on one hit point. That's why so many old farms drop mobs 22 blocks into a killing chamber. Spiders have 16 health and die from any fall of 19 blocks or more. Endermen have 40.
+
+Measure the drop from the floor the mob falls from to the block it lands on.
+
+## What cancels a fall
+
+- **Water.** Touching water resets a mob's fall distance to zero, so landing in water never hurts, however far the fall.
+- **Ladders.** A mob on a ladder falls slowly and its fall distance resets.
+
+<Unconfirmed basis="Seen in 1.2-era code, not checked in 1.1">
+  That ladders slow and reset the fall for every mob, not just players. Test a laddered drop with a spawn egg
+  before relying on it.
+</Unconfirmed>
+
+### Vines and cobwebs
+
+<AppliesTo versions={['1.2', '1.3', '1.4+']} note="Not in 1.1." />
+
+Vines and cobwebs don't stop a fall in 1.1. Vines became climbable, and cobwebs started absorbing all fall damage, in 1.2.
+
+## Bringing mobs down safely
+
+Water resets the fall, but only while the mob is in it. A water source at the top of a 5-block tube still leaves a 4-block fall below it, which costs half a heart. For hostile mobs with 10 hearts that hardly matters. If you want no damage at all, there are three ways to do it.
+
+**1. Land them in water.** Drop the mobs straight down into water at the bottom, such as a flowing channel that carries them on. Landing in water cancels the fall at any height. This is the simplest and most reliable option, never stalls, and the landing water can be the start of your collection channel.
+
+**2. Stack water and signs.** Down the tube, alternate a water source and a sign: water, sign, water, sign. A sign holds the water above it in place, and mobs fall straight through signs because they have no collision. With water at least every 3 blocks, the fall never builds up enough to hurt.
+
+The catch: mobs in water bob up and down instead of sinking, so a mob can hover in each water block for a while before it drops through the sign below. It works, but it's slow and can back up when lots of mobs arrive at once.
+
+**3. Line the tube with ladders.** A mob inside a ladder block falls slowly and its fall resets, so a laddered 1 × 1 tube is a slow, damage-free descent. This is the one marked as not yet confirmed above, so test it first.
+
+<Callout icon="egg" title="Test it with spawn eggs" subtitle="New in 1.1">
+  Spawn eggs arrived in 1.1. Build a test tube in a creative copy of your world and drop a few zombies down it
+  before you build the real thing.
+</Callout>
+
+## Sources
+
+- Decompiled game code for Beta 1.8.1 and 1.2.5. Rules only seen there are marked as not yet confirmed.
+- [Minecraft Wiki: Java Edition 1.2 releases](https://minecraft.wiki/w/Java_Edition_guides/1.2_releases): vines became climbable and cobwebs started absorbing fall damage in 1.2.

@@ -1,0 +1,196 @@
+---
+title: Style guide
+description: Every component available to guide pages, with examples.
+section: start
+nav: false
+eyebrow: For authors
+---
+
+import {
+  Actions,
+  AppliesTo,
+  Button,
+  Callout,
+  Item,
+  ItemList,
+  LayerDiagram,
+  PixelIcon,
+  Unconfirmed,
+  Variant,
+  Variants,
+  VersionStrip,
+} from '@/components/ui';
+import IconGallery from '@/components/styleguide/IconGallery.astro';
+
+This page isn't in the sidebar. It shows every component a guide page can use. Import them at the top of an MDX file:
+
+```mdx
+import { Callout, Item, ItemList } from '@/components/ui';
+```
+
+## Text
+
+Body text, **bold**, _italic_, `inline code` and [links](/). Headings `##` and `###` appear in the "On this page" list on the right.
+
+> A blockquote, for a quote from the game or a changelog.
+
+| Level | Total XP |
+| ----- | -------: |
+| 30    |    1,725 |
+| 50    |    4,625 |
+
+## Variants
+
+Switches between alternative versions of some content. Good for comparing drafts of copy, or two ways to build the same farm. The reader's choice is remembered.
+
+```mdx
+<Variants id="intro" label="Intro draft">
+  <Variant name="Personal" note="First person.">
+    ...
+  </Variant>
+  <Variant name="Short">...</Variant>
+</Variants>
+```
+
+<Variants id="styleguide-intro" label="Intro draft" footnote="These are the drafts the home page was chosen from.">
+  <Variant name="Build with what you have" note="Earnest, medium length.">
+
+For a lot of us, Minecraft was never about having every block. It was about looking at what you had and working out what you could make with it. A cobblestone wall, a few torches, a water channel and a lot of stubbornness could become a castle, a mob farm or a railway across the map.
+
+  </Variant>
+  <Variant name="Short and punchy" note="Easiest to skim; least personal.">
+
+Minecraft has always been a game about limits. You get a handful of blocks and a world that doesn't care, and your imagination does the rest.
+
+  </Variant>
+  <Variant name="Personal" note="First person. This one is on the home page.">
+
+Newer versions of Minecraft have more of everything. More blocks, more mobs, more systems to learn. For me, more of everything is part of the problem.
+
+  </Variant>
+  <Variant name="Edges of the sandbox" note="Frames the limits as the point.">
+
+A sandbox is interesting because of where it stops. Minecraft 1.1 has clear edges: one kind of plank, no way to pipe items around, no villager shops, a world 128 blocks tall.
+
+  </Variant>
+</Variants>
+
+## Applies to
+
+Which versions a page or section holds for. Every chip is always shown, so you can see where a rule starts and stops. Article pages get one under the title from the `versions` frontmatter; put one straight after a heading when a section is different.
+
+```mdx
+<AppliesTo versions={['1.1', '1.2']} note="Bows can't be enchanted in 1.0." />
+```
+
+<AppliesTo versions={['1.0', '1.1', '1.2']} />
+
+<AppliesTo versions={['1.1', '1.2']} note="Bows can't be enchanted in 1.0." />
+
+<AppliesTo
+  versions={['b1.8', '1.0', '1.1', '1.2', '1.3', '1.4+']}
+  label="Works in"
+  note="A farm that works in every version."
+/>
+
+## Callout
+
+Styled like an item tooltip. Use it for the one thing on a page the reader shouldn't miss.
+
+```mdx
+<Callout icon="lamp" title="What 1.1 gives up" subtitle="Redstone lamp · added in 1.2">
+  Text goes here.
+</Callout>
+```
+
+<Callout icon="lamp" title="What 1.1 gives up" subtitle="Redstone lamp · added in 1.2">
+  A light you can switch on and off is the one thing from 1.2 that's hard to live without.
+</Callout>
+
+<Callout title="No icon">The icon and subtitle are optional.</Callout>
+
+## Unconfirmed
+
+For a claim that hasn't been checked in 1.1 yet. Say where it comes from. Remove the box once the claim is tested, and add the source to the page.
+
+```mdx
+<Unconfirmed basis="Seen in 1.2 code, not checked in 1.1">
+  Mobs only wander at random for about their first 5 seconds.
+</Unconfirmed>
+```
+
+<Unconfirmed basis="Seen in 1.2 code, not checked in 1.1">
+  Mobs only wander at random for about their first 5 seconds.
+</Unconfirmed>
+
+## Item list
+
+An icon in a slot, a title and a line of text. Two columns by default; `columns={1}` for longer text. `tag` marks the version something arrived in.
+
+```mdx
+<ItemList>
+  <Item icon="wool" title="Sheep regrow their wool">
+    Text goes here.
+  </Item>
+  <Item icon="golem" title="Iron golems" tag="1.2">
+    Text goes here.
+  </Item>
+</ItemList>
+```
+
+<ItemList>
+  <Item icon="wool" title="Sheep regrow their wool">
+    A sheared sheep grows its wool back by eating grass.
+  </Item>
+  <Item icon="golem" title="Iron golems" tag="1.2">
+    Not in 1.1. Villages spawn golems that drop iron.
+  </Item>
+</ItemList>
+
+## Layer diagram
+
+Top-down maps of a build, one per block of height, bottom first, with a legend and a count of what you need. Each layer is a list of strings, one character per block. The characters are defined in `src/lib/blocks.ts`. For a real build, keep the layers in `src/lib/designs/`, as the Etho mob system page does.
+
+```mdx
+<LayerDiagram label="A single spawning pad" layers={[{ name: 'Floor', rows: ['#####', ...] }, ...]} />
+```
+
+<LayerDiagram
+  label="A single spawning pad"
+  footnote="An example, not a working farm."
+  layers={[
+    { name: 'Floor', rows: ['#######', '#######', '#######', '#######', '#######', '#######', '#######'] },
+    {
+      name: 'Water',
+      note: 'The bottom of the pad, ringed by water.',
+      rows: ['#######', '#S~~~S#', '#~###~#', '#~###~#', '#~###~#', '#S~~~S#', '#######'],
+    },
+    { name: 'Pad top', rows: ['#######', '#.....#', '#.###.#', '#.###.#', '#.###.#', '#.....#', '#######'] },
+    {
+      name: 'Spawning',
+      note: 'A slab in the middle stops spiders.',
+      rows: ['#######', '#.....#', '#.mmm.#', '#.mHm.#', '#.mmm.#', '#.....#', '#######'],
+    },
+  ]}
+/>
+
+## Version strip
+
+The releases around 1.1, with one highlighted. Data lives in `src/lib/versions.ts`.
+
+<VersionStrip current="1.1" />
+
+## Buttons
+
+`<Button href="...">` is a link. Without `href` it shows as disabled, for things that aren't ready.
+
+<Actions>
+  <Button href="/">A link</Button>
+  <Button>Not ready yet</Button>
+</Actions>
+
+## Pixel icons
+
+Drawn in `src/lib/icons.ts` as 8×8 grids. Use `<PixelIcon name="wool" />`.
+
+<IconGallery />

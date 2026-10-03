@@ -1,0 +1,74 @@
+---
+/**
+ * One row in an <ItemList>. The text goes between the tags.
+ * `tag` adds a small red version badge, e.g. tag="1.2" for something 1.1 doesn't have.
+ */
+import PixelIcon from './PixelIcon.astro';
+import type { IconName } from '@/lib/icons';
+
+interface Props {
+  icon: IconName;
+  title: string;
+  tag?: string;
+}
+
+const { icon, title, tag } = Astro.props;
+---
+
+<li>
+  <div class="ic slot">
+    <PixelIcon name={icon} />
+  </div>
+  <div>
+    <strong>
+      {title}
+      {tag && <span class="tag">{tag}</span>}
+    </strong>
+    <div class="body">
+      <slot />
+    </div>
+  </div>
+</li>
+
+<style>
+  li {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 12px;
+    align-items: start;
+  }
+
+  .ic {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+  }
+
+  strong {
+    display: block;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .tag {
+    display: inline-block;
+    font: var(--px-sm) / 1 var(--font-pixel);
+    color: #fff;
+    background: var(--bad);
+    padding: 2px 5px;
+    margin-left: 6px;
+    vertical-align: 2px;
+    text-shadow: 1px 1px 0 #0006;
+  }
+
+  .body {
+    font-size: var(--text-small);
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+
+  .body :global(p) {
+    margin: 0;
+  }
+</style>

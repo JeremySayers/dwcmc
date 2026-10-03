@@ -1,0 +1,49 @@
+---
+/** Every pixel icon with its name, for the style guide. */
+import PixelIcon from '@/components/ui/PixelIcon.astro';
+import { ICONS, type IconName } from '@/lib/icons';
+
+const names = Object.keys(ICONS) as IconName[];
+---
+
+<ul class="gallery">
+  {names.map((name) => (
+    <li>
+      <div class="slot">
+        <PixelIcon name={name} size={32} />
+      </div>
+      <code>{name}</code>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .gallery {
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+    max-width: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+    gap: 12px;
+  }
+
+  li {
+    display: grid;
+    justify-items: center;
+    gap: 4px;
+  }
+
+  .slot {
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+  }
+
+  code {
+    font: 13px var(--font-mono);
+    color: var(--ink-2);
+    background: none;
+  }
+</style>

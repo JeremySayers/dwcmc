@@ -1,0 +1,105 @@
+---
+/**
+ * The releases around 1.1 as a row of inventory slots, with `current` highlighted.
+ * Data lives in src/lib/versions.ts.
+ */
+import { VERSIONS, monthYear, type VersionName } from '@/lib/versions';
+
+interface Props {
+  current?: VersionName;
+  currentLabel?: string;
+}
+
+const { current = '1.1', currentLabel = 'This guide' } = Astro.props;
+---
+
+<ol class="versions" aria-label="Minecraft releases around 1.1">
+  {VERSIONS.map((v) => (
+    <li
+      class:list={['ver', { current: v.name === current }]}
+      aria-current={v.name === current ? 'true' : undefined}
+    >
+      {v.name === current && <span class="tag">{currentLabel}</span>}
+      <b>{v.name}</b>
+      <time datetime={v.date}>{monthYear(v.date)}</time>
+      <span class="sum">{v.summary}</span>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .versions {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px;
+    margin: 22px 0 6px;
+    padding: 10px;
+    background: var(--slot-dark);
+    border: 2px solid var(--edge);
+    max-width: none;
+  }
+
+  .ver {
+    position: relative;
+    display: grid;
+    gap: 4px;
+    align-content: start;
+    padding: 10px 10px 12px;
+    background: var(--slot);
+    border: 2px solid;
+    border-color: var(--slot-dark) var(--bevel-hi) var(--bevel-hi) var(--slot-dark);
+    color: #fff;
+  }
+
+  .current {
+    outline: 3px solid #fff;
+    outline-offset: 2px;
+    background: var(--selected);
+    border-color: var(--selected-lo) var(--selected-hi) var(--selected-hi) var(--selected-lo);
+  }
+
+  b {
+    font: var(--px-xl) / 1 var(--font-pixel);
+    text-shadow: 2px 2px 0 var(--title);
+  }
+
+  time {
+    font: var(--px-sm) / 1 var(--font-pixel);
+    color: #e6e6e6;
+    text-shadow: 1px 1px 0 var(--title);
+  }
+
+  .sum {
+    font-size: 14px;
+    line-height: 1.4;
+    text-shadow: 1px 1px 0 #3f3f3f99;
+  }
+
+  .tag {
+    position: absolute;
+    top: -12px;
+    right: 8px;
+    font: var(--px-sm) / 1 var(--font-pixel);
+    background: var(--gold);
+    color: #1a1a1a;
+    padding: 3px 6px;
+    border: 2px solid var(--edge);
+  }
+
+  @media (max-width: 900px) {
+    .versions {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 560px) {
+    .versions {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .tag {
+      top: 8px;
+    }
+  }
+</style>
