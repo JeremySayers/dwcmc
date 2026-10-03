@@ -1,0 +1,13 @@
+---
+/** Links written in MDX pages ("[text](/mechanics/…)"), with the site's base path added. */
+import type { HTMLAttributes } from 'astro/types';
+import { withBase } from '@/lib/url';
+
+type Props = HTMLAttributes<'a'>;
+
+const { href, ...rest } = Astro.props;
+---
+
+<a href={typeof href === 'string' ? withBase(href) : href} {...rest}>
+  <slot />
+</a>

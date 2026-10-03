@@ -5,6 +5,7 @@
  */
 import PixelIcon from '@/components/ui/PixelIcon.astro';
 import { getNav } from '@/lib/guide';
+import { withBase } from '@/lib/url';
 
 const groups = (await getNav()).filter((g) => g.section.inTopNav);
 ---
@@ -28,7 +29,7 @@ const groups = (await getNav()).filter((g) => g.section.inTopNav);
       </>
     );
     return g.firstHref ? (
-      <a class="tile btn-surface" href={g.firstHref}>
+      <a class="tile btn-surface" href={withBase(g.firstHref)}>
         {inner}
       </a>
     ) : (

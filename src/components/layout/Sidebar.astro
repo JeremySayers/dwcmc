@@ -5,6 +5,7 @@
  * On phones the whole tree folds into one "Browse all pages" disclosure.
  */
 import type { NavGroup } from '@/lib/nav';
+import { withBase } from '@/lib/url';
 
 interface Props {
   nav: NavGroup[];
@@ -45,7 +46,7 @@ const { nav, currentId } = Astro.props;
           {g.pages.map((p) => (
             <li>
               {p.href ? (
-                <a href={p.href} aria-current={p.id === currentId ? 'page' : undefined}>
+                <a href={withBase(p.href)} aria-current={p.id === currentId ? 'page' : undefined}>
                   {p.title}
                 </a>
               ) : (

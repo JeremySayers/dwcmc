@@ -3,6 +3,8 @@
  * Stone button. Renders a link when `href` is set, otherwise a disabled placeholder
  * (for things that aren't written yet).
  */
+import { withBase } from '@/lib/url';
+
 interface Props {
   href?: string | null;
   current?: boolean;
@@ -13,7 +15,7 @@ const { href, current = false, disabledReason = 'Coming soon' } = Astro.props;
 ---
 
 {href ? (
-  <a class="btn btn-surface" href={href} aria-current={current ? 'page' : undefined}>
+  <a class="btn btn-surface" href={withBase(href)} aria-current={current ? 'page' : undefined}>
     <slot />
   </a>
 ) : (

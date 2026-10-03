@@ -7,6 +7,7 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Eyebrow from '@/components/ui/Eyebrow.astro';
 import AppliesTo from '@/components/ui/AppliesTo.astro';
+import MdxLink from '@/components/layout/MdxLink.astro';
 import { SECTIONS } from '@/lib/sections';
 
 export async function getStaticPaths() {
@@ -22,6 +23,8 @@ const { Content, headings } = await render(entry);
 const { title, description, section, template, eyebrow, nav, versions } = entry.data;
 const sectionName = SECTIONS.find((s) => s.id === section)?.name;
 const isHome = entry.id === 'index';
+// Internal links in pages are written as "/mechanics/…"; MdxLink adds the base path.
+const components = { a: MdxLink };
 ---
 
 <BaseLayout
@@ -33,14 +36,14 @@ const isHome = entry.id === 'index';
   noindex={!nav}
 >
   {template === 'panels' ? (
-    <Content />
+    <Content components={components} />
   ) : (
     <article class="paper">
       <div class="prose">
         <Eyebrow>{eyebrow ?? sectionName}</Eyebrow>
         <h1>{title}</h1>
         {versions && <AppliesTo versions={versions} />}
-        <Content />
+        <Content components={components} />
       </div>
     </article>
   )}

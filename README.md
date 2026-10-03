@@ -54,6 +54,8 @@ public/              copied as-is (CNAME, favicon)
 
 ## Deploy
 
-`.github/workflows/deploy.yml` builds and deploys to GitHub Pages on every push to `main`. In the repository settings, set **Pages → Source** to **GitHub Actions**. `public/CNAME` points the site at dwcmc.com; add the DNS records GitHub lists under **Pages → Custom domain**.
+`.github/workflows/deploy.yml` builds and deploys to GitHub Pages on every push to `main`. The site is live at https://jeremysayers.github.io/dwcmc/.
+
+To move it to dwcmc.com, set `SITE` and `BASE` at the top of `astro.config.mjs` as the comment there describes, point the domain's DNS at GitHub Pages, and add the custom domain under **Settings → Pages**.
 
 Fan project. Not affiliated with Mojang or Microsoft. No game textures are used.

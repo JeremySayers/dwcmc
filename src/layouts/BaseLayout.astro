@@ -6,6 +6,7 @@ import Sidebar from '@/components/layout/Sidebar.astro';
 import Rail from '@/components/layout/Rail.astro';
 import { getNav } from '@/lib/guide';
 import type { SectionId } from '@/lib/sections';
+import { withBase } from '@/lib/url';
 
 interface Props {
   /** Page title. The home page passes null to use the site name alone. */
@@ -42,7 +43,7 @@ const hasRail = toc.length > 0;
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
     <meta name="theme-color" content="#1d1610" />
     <meta property="og:site_name" content={SITE} />
     <meta property="og:title" content={fullTitle} />

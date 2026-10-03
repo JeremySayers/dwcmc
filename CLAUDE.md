@@ -1,6 +1,6 @@
 # DWCMC
 
-Static Astro site: a field guide to Minecraft Java Edition 1.1. Deployed to GitHub Pages at dwcmc.com.
+Static Astro site: a field guide to Minecraft Java Edition 1.1. Deployed to GitHub Pages at https://jeremysayers.github.io/dwcmc/ (dwcmc.com later).
 
 ## Commands
 
@@ -13,6 +13,7 @@ Static Astro site: a field guide to Minecraft Java Edition 1.1. Deployed to GitH
 
 - **Every page is an MDX file** in `src/content/guide/<section>/`. The file path is the URL, and `index.mdx` is `/`. `src/pages/[...slug].astro` renders them all.
 - **Frontmatter is validated** by `src/content.config.ts`. The fields are `title`, `description`, `section`, `order`, `status` (`published`/`planned`), `nav`, `template` (`article`/`panels`), `eyebrow` and `versions`. Don't use a `layout` key: MDX reserves it for a layout file path.
+- **The site is served under `/dwcmc`** on GitHub Pages (`BASE` in `astro.config.mjs`). In components, pass every internal link through `withBase()` from `src/lib/url.ts`. In MDX, write links as `/mechanics/…`; `MdxLink` adds the base.
 - **Navigation is generated.** The sidebar, top nav, section tiles and "On this page" list all come from the collection and the headings, so never hand-edit nav lists. Sections are defined in `src/lib/sections.ts`.
 - **Planned pages** (`status: planned`) are the backlog. They show greyed out in the sidebar and aren't built. To publish one, write it and remove the `status` line.
 - **`template: panels`** pages (the home page) lay out their own `<Panel>`s. `article` pages are wrapped in one panel with an eyebrow and an h1 taken from the frontmatter.

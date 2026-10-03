@@ -3,6 +3,7 @@ import Button from '@/components/ui/Button.astro';
 import PixelIcon from '@/components/ui/PixelIcon.astro';
 import type { NavGroup } from '@/lib/nav';
 import type { SectionId } from '@/lib/sections';
+import { withBase } from '@/lib/url';
 
 interface Props {
   nav: NavGroup[];
@@ -15,7 +16,7 @@ const sections = nav.filter((g) => g.section.inTopNav);
 ---
 
 <header class="top bev">
-  <a class="logo" href="/" aria-label="DWCMC home">
+  <a class="logo" href={withBase('/')} aria-label="DWCMC home">
     <PixelIcon name="grass" size={40} />
     <span class="name">DWCMC</span>
     <span class="tagline">A field guide to Minecraft 1.1</span>
